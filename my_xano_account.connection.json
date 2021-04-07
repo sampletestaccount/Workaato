@@ -1,0 +1,10 @@
+{
+  "name": "My Xano account",
+  "provider": {
+    "zip_name": "xano.custom_adapter.json",
+    "name": "Xano",
+    "folder": ""
+  },
+  "secure_gateway_tunnel_name": null,
+  "root_folder": false
+}

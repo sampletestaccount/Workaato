@@ -1,0 +1,579 @@
+{
+  "name": "Xano  Recipe",
+  "description": "When there is a trigger event, do action",
+  "version": 60,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "google_sheets",
+    "name": "team_drive_new_spreadsheet_row_v4",
+    "as": "059e6b8d",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+      "spreadsheet": "Xano New Post"
+    },
+    "toggleCfg": {
+      "spreadsheet": true,
+      "sheet": true
+    },
+    "input": {
+      "spreadsheet": "12sMLEuwFCkPA_Zu1dZCaP11EWrWrWlSyVtIosHvRZZw",
+      "sheet": "Sheet1"
+    },
+    "extended_output_schema": [
+      {
+        "type": "object",
+        "name": "columns",
+        "label": "Columns",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Name",
+            "optional": true,
+            "type": "string",
+            "name": "col_1"
+          },
+          {
+            "control_type": "text",
+            "label": "Body",
+            "optional": true,
+            "type": "string",
+            "name": "col_2"
+          },
+          {
+            "control_type": "text",
+            "label": "Category Id",
+            "optional": true,
+            "type": "string",
+            "name": "col_3"
+          },
+          {
+            "control_type": "text",
+            "label": "User Id",
+            "optional": true,
+            "type": "string",
+            "name": "col_4"
+          }
+        ]
+      }
+    ],
+    "extended_input_schema": [
+      {
+        "type": "string",
+        "name": "sheet",
+        "control_type": "select",
+        "label": "Sheet",
+        "hint": "Select a sheet to monitor for new row. The sheet must have at least one header row and  one data row.",
+        "pick_list": [
+          [
+            "Sheet1",
+            "Sheet1"
+          ]
+        ],
+        "optional": false,
+        "extends_schema": true,
+        "toggle_hint": "Select a sheet",
+        "toggle_field": {
+          "control_type": "text",
+          "label": "Sheet",
+          "toggle_hint": "Use sheet name",
+          "extends_schema": true,
+          "change_on_blur": true,
+          "toggle_to_secondary_hint": "Use sheet name",
+          "toggle_to_primary_hint": "Select a sheet",
+          "hint": "Enter the sheet name. The sheet must have at least one header row and one data row.",
+          "type": "string",
+          "name": "sheet"
+        }
+      },
+      {
+        "type": "boolean",
+        "name": "header_fl",
+        "control_type": "checkbox",
+        "label": "Add column names manually?",
+        "hint": "Default is <b>No</b>.<br>If <b>Yes</b>, add column names manually in the input field below.<br>If <b>No</b>, Workato will automatically get the first row in your sheet as column names.<br>",
+        "optional": true,
+        "extends_schema": true,
+        "toggle_hint": "Select from option list",
+        "toggle_field": {
+          "label": "Add column names manually?",
+          "control_type": "text",
+          "toggle_hint": "Use custom value",
+          "extends_schema": true,
+          "hint": "Default is <b>No</b>.<br>If <b>Yes</b>, add column names manually in the input field below.<br>If <b>No</b>, Workato will automatically get the first row in your sheet as column names.<br>",
+          "optional": true,
+          "type": "boolean",
+          "name": "header_fl"
+        },
+        "render_input": {
+        },
+        "parse_output": {
+        }
+      }
+    ],
+    "visible_config_fields": [
+      "team_drives",
+      "spreadsheet",
+      "sheet",
+      "___poll_interval",
+      "header_fl"
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "logger",
+        "name": "log_message",
+        "as": "3e0e426d",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "message": "new row added in GS"
+        },
+        "uuid": "f49fcdda-7fd1-453c-babc-47618a3ab66e"
+      },
+      {
+        "number": 2,
+        "provider": "new_connector_3_connector_203122_1614758338",
+        "name": "insert_post",
+        "as": "c6affd9c",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "user_id": "#{_('data.google_sheets.059e6b8d.columns.col_4')}",
+          "category_id": "#{_('data.google_sheets.059e6b8d.columns.col_3')}",
+          "name": "#{_('data.google_sheets.059e6b8d.columns.col_1')}",
+          "body": "#{_('data.google_sheets.059e6b8d.columns.col_2')}"
+        },
+        "visible_config_fields": [
+          "created at",
+          "user_id",
+          "category_id",
+          "name",
+          "body",
+          "id"
+        ],
+        "uuid": "4f592258-4b39-4330-99ca-041b4545eb40"
+      },
+      {
+        "number": 3,
+        "provider": "google_sheets",
+        "name": "add_spreadsheet_row_v4",
+        "as": "9ea732a1",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "spreadsheet": "Xano Published Posts"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "team_drives": "my_drive",
+          "spreadsheet": "1yvW7BYc49EATzGcbmV4HfZNc-yOBRjoPGbcNBE3VBUM",
+          "sheet": "Sheet1",
+          "data": {
+            "col_1": "#{_('data.new_connector_3_connector_203122_1614758338.c6affd9c.id')}",
+            "col_5": "#{_('data.new_connector_3_connector_203122_1614758338.c6affd9c.user_id')}",
+            "col_4": "#{_('data.new_connector_3_connector_203122_1614758338.c6affd9c.category_id')}",
+            "col_3": "#{_('data.new_connector_3_connector_203122_1614758338.c6affd9c.body')}",
+            "col_2": "#{_('data.new_connector_3_connector_203122_1614758338.c6affd9c.name')}"
+          }
+        },
+        "extended_input_schema": [
+          {
+            "type": "string",
+            "name": "sheet",
+            "control_type": "select",
+            "label": "Sheet",
+            "hint": "Select a sheet to add row to. The sheet must have at least one header row and one data row. <a href='https://workato.freshdesk.com/support/solutions/articles/1000213808-working-with-google-sheets' target='_blank'>Learn more</a>",
+            "pick_list": [
+              [
+                "Sheet1",
+                "Sheet1"
+              ]
+            ],
+            "optional": false,
+            "extends_schema": true,
+            "toggle_hint": "Select a sheet",
+            "toggle_field": {
+              "control_type": "text",
+              "label": "Sheet name",
+              "toggle_hint": "Use sheet name",
+              "extends_schema": true,
+              "change_on_blur": true,
+              "toggle_to_secondary_hint": "Use sheet name",
+              "toggle_to_primary_hint": "Select a sheet",
+              "hint": "Use <b>Sheet name</b> pill from the output of other Google Sheets’ triggers/actions. Or enter sheet name manually.",
+              "type": "string",
+              "name": "sheet_name"
+            }
+          },
+          {
+            "type": "object",
+            "name": "data",
+            "label": "Columns",
+            "hint": "Input values of the new row.",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Xano Id",
+                "sticky": true,
+                "optional": true,
+                "type": "string",
+                "name": "col_1",
+                "parent": "data"
+              },
+              {
+                "control_type": "text",
+                "label": "Name",
+                "sticky": true,
+                "optional": true,
+                "type": "string",
+                "name": "col_2",
+                "parent": "data"
+              },
+              {
+                "control_type": "text",
+                "label": "Body",
+                "sticky": true,
+                "optional": true,
+                "type": "string",
+                "name": "col_3",
+                "parent": "data"
+              },
+              {
+                "control_type": "text",
+                "label": "Category Id",
+                "sticky": true,
+                "optional": true,
+                "type": "string",
+                "name": "col_4",
+                "parent": "data"
+              },
+              {
+                "control_type": "text",
+                "label": "UserId",
+                "sticky": true,
+                "optional": true,
+                "type": "string",
+                "name": "col_5",
+                "parent": "data"
+              }
+            ]
+          }
+        ],
+        "uuid": "e36c165a-b7d6-45a3-a2b6-48f15c02e665",
+        "skip": false
+      },
+      {
+        "number": 4,
+        "provider": "google_sheets",
+        "name": "update_row_v4_new",
+        "as": "24fe62cd",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "spreadsheet": "Xano New Post"
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "team_drives": "my_drive",
+          "spreadsheet": "12sMLEuwFCkPA_Zu1dZCaP11EWrWrWlSyVtIosHvRZZw",
+          "sheet": "Sheet1",
+          "row_number": "3",
+          "data": {
+            "col_Name": "Completed"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "type": "object",
+            "name": "columns",
+            "label": "Columns",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "custom_attribute": 1,
+                "type": "string",
+                "name": "col_Name"
+              },
+              {
+                "control_type": "text",
+                "label": "Body",
+                "custom_attribute": 2,
+                "type": "string",
+                "name": "col_Body"
+              },
+              {
+                "control_type": "text",
+                "label": "Category Id",
+                "custom_attribute": 3,
+                "type": "string",
+                "name": "col_Category_Id"
+              },
+              {
+                "control_type": "text",
+                "label": "Category Id (Deprecated)",
+                "custom_attribute": 3,
+                "type": "string",
+                "name": "col_Category Id"
+              },
+              {
+                "control_type": "text",
+                "label": "User Id",
+                "custom_attribute": 4,
+                "type": "string",
+                "name": "col_User_Id"
+              },
+              {
+                "control_type": "text",
+                "label": "User Id (Deprecated)",
+                "custom_attribute": 4,
+                "type": "string",
+                "name": "col_User Id"
+              }
+            ]
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "type": "string",
+            "name": "sheet",
+            "control_type": "select",
+            "label": "Sheet",
+            "hint": "Select a sheet to update row. The sheet must have at least one header row and one data row. <a href='https://workato.freshdesk.com/support/solutions/articles/1000213808-working-with-google-sheets' target='_blank'>Learn more</a>",
+            "pick_list": [
+              [
+                "Sheet1",
+                "Sheet1"
+              ]
+            ],
+            "optional": false,
+            "extends_schema": true,
+            "toggle_hint": "Select a sheet",
+            "toggle_field": {
+              "control_type": "text",
+              "label": "Sheet name",
+              "toggle_hint": "Use sheet name",
+              "extends_schema": true,
+              "change_on_blur": true,
+              "toggle_to_secondary_hint": "Use sheet name",
+              "toggle_to_primary_hint": "Select a sheet",
+              "hint": "Use <b>Sheet name</b> pill from the output of other Google Sheets’ triggers/actions. Or enter sheet name manually.",
+              "type": "string",
+              "name": "sheet_name"
+            }
+          },
+          {
+            "type": "string",
+            "name": "row_number",
+            "control_type": "text",
+            "label": "Row number",
+            "hint": "Enter the row number of the row you want to update. Or use <b>Row number</b> data pill from the output of other Google Sheets’s triggers & actions.",
+            "optional": false
+          },
+          {
+            "type": "object",
+            "name": "data",
+            "label": "Columns",
+            "hint": "Input new values to update the row.",
+            "sticky": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "optional": true,
+                "sticky": true,
+                "type": "string",
+                "name": "col_Name",
+                "parent": "data"
+              },
+              {
+                "control_type": "text",
+                "label": "Body",
+                "optional": true,
+                "sticky": true,
+                "type": "string",
+                "name": "col_Body",
+                "parent": "data"
+              },
+              {
+                "control_type": "text",
+                "label": "Category Id",
+                "optional": true,
+                "sticky": true,
+                "type": "string",
+                "name": "col_Category Id",
+                "parent": "data"
+              },
+              {
+                "control_type": "text",
+                "label": "User Id",
+                "optional": true,
+                "sticky": true,
+                "type": "string",
+                "name": "col_User Id",
+                "parent": "data"
+              }
+            ]
+          }
+        ],
+        "uuid": "f2a82336-b759-4527-afbd-fb462fd2700e"
+      },
+      {
+        "number": 5,
+        "provider": "google_sheets",
+        "name": "__adhoc_http_action",
+        "as": "873edf9c",
+        "title": "Delete row",
+        "description": "Delete <span class=\"provider\">row</span> in <span class=\"provider\">Google Sheets</span> (Custom)",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "mnemonic": "Delete row",
+          "verb": "delete",
+          "response_type": "json",
+          "path": "https://spreadsheets.google.com/feeds/cells/12sMLEuwFCkPA_Zu1dZCaP11EWrWrWlSyVtIosHvRZZw/1/public/full?alt=json"
+        },
+        "extended_input_schema": [
+          {
+            "type": "string",
+            "name": "path",
+            "control_type": "text",
+            "label": "Path",
+            "hint": "Base URI is <b>https://sheets.googleapis.com/v4/</b> - path will be appended to this URI. Use absolute URI to override this base URI.",
+            "optional": false
+          },
+          {
+            "type": "string",
+            "name": "response_type",
+            "control_type": "select",
+            "label": "Response type",
+            "default": "json",
+            "sticky": false,
+            "pick_list": [
+              [
+                "JSON response",
+                "json"
+              ],
+              [
+                "Raw response",
+                "raw"
+              ]
+            ],
+            "optional": true,
+            "extends_schema": true
+          },
+          {
+            "type": "object",
+            "name": "input",
+            "control_type": "form-schema-builder",
+            "label": "Request URL parameters",
+            "sticky": true,
+            "optional": true,
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Schema",
+                "extends_schema": true,
+                "sticky": true,
+                "optional": true,
+                "type": "string",
+                "name": "schema",
+                "parent": "input"
+              }
+            ]
+          },
+          {
+            "type": "array",
+            "name": "request_headers",
+            "control_type": "key_value",
+            "label": "Request headers",
+            "optional": true,
+            "of": "object",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Name",
+                "optional": true,
+                "type": "string",
+                "name": "name",
+                "parent": "request_headers"
+              },
+              {
+                "control_type": "text",
+                "label": "Value",
+                "optional": true,
+                "type": "string",
+                "name": "value",
+                "parent": "request_headers"
+              }
+            ]
+          },
+          {
+            "type": "string",
+            "name": "output",
+            "control_type": "schema-designer",
+            "label": "Response body",
+            "sticky": true,
+            "optional": true,
+            "extends_schema": true,
+            "schema_neutral": true
+          },
+          {
+            "type": "string",
+            "name": "response_headers",
+            "control_type": "schema-designer",
+            "label": "Response headers",
+            "sticky": false,
+            "optional": true,
+            "extends_schema": true,
+            "schema_neutral": true
+          }
+        ],
+        "uuid": "4a24787b-9a68-42b4-ad72-89c8f5b1a827",
+        "skip": true
+      }
+    ],
+    "uuid": "31afef45-9451-4608-a056-76e91800fce7"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "google_sheets",
+      "account_id": {
+        "zip_name": "shivani_google_sheets_account.connection.json",
+        "name": "Shivani Google Sheets account",
+        "folder": ""
+      },
+      "skip_validation": false
+    },
+    {
+      "keyword": "application",
+      "provider": "new_connector_3_connector_203122_1614758338",
+      "account_id": null,
+      "skip_validation": false
+    },
+    {
+      "keyword": "application",
+      "provider": "logger",
+      "account_id": null,
+      "skip_validation": false
+    }
+  ]
+}

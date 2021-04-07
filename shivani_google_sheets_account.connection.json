@@ -1,0 +1,6 @@
+{
+  "name": "Shivani Google Sheets account",
+  "provider": "google_sheets",
+  "secure_gateway_tunnel_name": null,
+  "root_folder": false
+}
